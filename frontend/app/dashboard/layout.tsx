@@ -19,7 +19,7 @@ export default async function DashboardLayout({
       >
         <div className="relative flex h-full flex-col">
           <Header />
-          <div className="flex-1 overflow-hidden px-4 py-6 md:px-8">
+          <div className="flex-1 overflow-hidden px-4 py-6 md:px-8 bg-secondary">
             {children}
           </div>
         </div>
