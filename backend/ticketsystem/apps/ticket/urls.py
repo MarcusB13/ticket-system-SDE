@@ -35,6 +35,14 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^(?P<ticket_uuid>\w+)/$",
+            views.GetSingleTicketView.as_view(),
+            name="ticket_view",
+        )
+    )
+
     return urls
 
 

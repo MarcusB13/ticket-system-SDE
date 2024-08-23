@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -100,3 +100,13 @@ class TicketView(APIView):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetSingleTicketView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = TicketSerializer
+
+    def get(self, request, *args, **kwargs):
+        ticketUuid = kwargs.get("ticket_uuid")
+        ticket = get_object_or_404(Ticket, uuid=ticketUuid)
+        return Response(self.serializer_class(ticket).data, status=status.HTTP_200_OK)
