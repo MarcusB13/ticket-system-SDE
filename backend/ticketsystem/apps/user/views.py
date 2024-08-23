@@ -35,7 +35,7 @@ class SignUpView(APIView):
         serializer = UserCreatorSerializer(data=inputData)
         if serializer.is_valid():
             serializer.save()
-            user = User.objects.get(username=inputData.get("username"))
+            user = serializer.instance
             user.set_password(password)
             user.save()
 
