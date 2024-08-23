@@ -18,6 +18,7 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):
         jwtKey = request.COOKIES.get("jwt")
+        print(jwtKey)
         if jwtKey is None:
             return None
 
