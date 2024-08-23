@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -17,10 +18,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(
-        "min-h-screen bg-background antialiased",
-        inter.className
-      )}>{children}</body>
+      <body
+        className={cn(
+          "min-h-screen bg-background antialiased",
+          inter.className
+        )}
+      >
+        <Toaster position="top-center" />
+        {children}
+      </body>
     </html>
   );
 }
