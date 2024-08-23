@@ -32,8 +32,6 @@ class SignUpView(APIView):
             data = {"error": "Passwords do not match"}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-        print(inputData)
-
         serializer = UserCreatorSerializer(data=inputData)
         if serializer.is_valid():
             serializer.save()

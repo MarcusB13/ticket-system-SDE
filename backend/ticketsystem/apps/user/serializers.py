@@ -26,7 +26,7 @@ class CompanySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(read_only=True, format="hex")
     company = serializers.SerializerMethodField(read_only=True)
-    username = serializers.CharField(read_only=True)
+    username = serializers.CharField()
 
     class Meta:
         model = User
@@ -52,7 +52,6 @@ class UserCreatorSerializer(UserSerializer):
         model = User
         fields = (
             "username",
-            "password",
             "email",
             "role",
         )
