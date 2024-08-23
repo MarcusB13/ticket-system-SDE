@@ -96,6 +96,7 @@ class TicketView(APIView):
 
             ticket = serializer.instance
             ticket.service_level_agreement = serviceLevelAgreement
+            ticket.created_by = request.user
             ticket.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)

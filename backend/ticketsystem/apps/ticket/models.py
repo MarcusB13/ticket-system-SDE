@@ -13,6 +13,13 @@ class Ticket(BaseModel):
         null=True,
         blank=True,
     )
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.DO_NOTHING,
+        related_name="created_tickets",
+        null=True,
+        blank=True,
+    )
     priority = models.CharField(
         max_length=16, choices=Priority.CHOICES, blank=False, null=False
     )

@@ -23,6 +23,7 @@ class TicketSerializer(serializers.ModelSerializer):
     assigned = UserSerializer(read_only=True)
     due_date = serializers.DateTimeField()
     service_level_agreement = ServiceLevelAgreementSerializer(read_only=True)
+    created_by = UserSerializer(read_only=True)
 
     class Meta:
         model = Ticket
@@ -30,6 +31,7 @@ class TicketSerializer(serializers.ModelSerializer):
             "uuid",
             "subject",
             "assigned",
+            "created_by",
             "priority",
             "status",
             "level",
