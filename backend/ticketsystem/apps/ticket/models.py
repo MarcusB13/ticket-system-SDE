@@ -21,10 +21,18 @@ class Ticket(BaseModel):
         blank=True,
     )
     priority = models.CharField(
-        max_length=16, choices=Priority.CHOICES, blank=False, null=False
+        max_length=16,
+        choices=Priority.CHOICES,
+        blank=False,
+        null=False,
+        default=Priority.LOW,
     )
     status = models.CharField(
-        max_length=16, choices=TicketStatus.CHOICES, blank=False, null=False
+        max_length=16,
+        choices=TicketStatus.CHOICES,
+        blank=False,
+        null=False,
+        default=TicketStatus.NEW,
     )
     level = models.IntegerField(default=1)
     due_date = models.DateTimeField()
