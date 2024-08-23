@@ -27,7 +27,7 @@ class SignUpView(APIView):
     def post(self, request, *args, **kwargs):
         inputData = request.data
         password = inputData.get("password")
-        password2 = inputData.pop("password2")
+        password2 = inputData.get("password2")
         if password != password2 or not password:
             data = {"error": "Passwords do not match"}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
