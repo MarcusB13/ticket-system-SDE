@@ -11,12 +11,27 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import axiosInstance from "@/lib/api";
+import { redirect } from "next/navigation";
 
 type Priorities = "Low" | "Medium" | "High";
 
 type Status = "New" | "Closed" | "Pending" | "Deleted";
 
-export default function page() {
+export default async function page() {
+  let user = null;
+
+  try {
+    const response = await axiosInstance.get("/users/current/");
+    user = response.data;
+  } catch (error) {
+    console.error("Error while fetching user data", error);
+  }
+
+  if (!user) {
+    redirect("/sign-up");
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-4 gap-6">
