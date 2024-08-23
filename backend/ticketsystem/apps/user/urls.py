@@ -35,6 +35,22 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^check-token/$",
+            views.CheckUerTokenView.as_view(),
+            name="check_token_view",
+        )
+    )
+
+    urls.append(
+        re_path(
+            r"^current/$",
+            views.GetUerView.as_view(),
+            name="get_user_view",
+        )
+    )
+
     return urls
 
 

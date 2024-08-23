@@ -110,3 +110,20 @@ class UpdateUseView(APIView):
         return Response(
             {"error": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class GetUerView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
+
+
+class CheckUerTokenView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = None
+
+    def get(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_200_OK)
