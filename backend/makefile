@@ -12,5 +12,9 @@ run:
 m:
 	$(BIN)python ./ticketsystem/manage.py migrate
 
+mm:
+	$(BIN)python ./ticketsystem/manage.py makemigrations
+
+
 superuser:
 	$(BIN)python ./ticketsystem/manage.py createsuperuser

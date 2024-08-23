@@ -17,8 +17,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-if "seematch/seematch/seematch" in str(BASE_DIR):
-    BASE_DIR = BASE_DIR.parent
 APPS_DIR = BASE_DIR / "apps"
 sys.path.insert(0, str(APPS_DIR))
 
@@ -39,10 +37,11 @@ SECRET_KEY = "django-insecure-j66cp0+t(0)g=l0rhdz8#u66(pn_5w+s6l+c@ev%751!jith96
 DEBUG = True
 
 ALLOWED_HOSTS = []
+SHELL_PLUS = "ipython"
 
+CUSTOM_APPS = ["user", "ticket"]
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -50,7 +49,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-]
+    "django_extensions",
+    "rest_framework",
+    "rest_framework.authtoken",
+] + CUSTOM_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -115,6 +117,31 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+AUTH_USER_MODEL = "user.User"
+REST_FRAMEWORK = {
+    "UNICODE_JSON": True,
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAdminUser",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "user.auth.CustomTokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+        # "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+    ),
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DATETIME_INPUT_FORMATS": (
+        "%d/%m/%Y %H:%M",  # '10/25/06 14:30'
+        "%Y-%m-%dT%H:%M:%S%z",  # 2018-04-30T15:24:00+02:00
+        "iso-8601",
+    ),
+    "DATE_INPUT_FORMATS": (
+        "%d/%m/%Y",
+        "%d-%m-%Y",
+    ),
+}
 
 
 # Internationalization

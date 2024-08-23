@@ -1,0 +1,56 @@
+POST http://localhost:8000/users/signup/  HTTP/1.1
+content-type: application/json
+
+{"email": "marcusbager14@gmail.com", "password": "password", "password2": "password", "username": "testuser"}
+
+
+###
+
+
+POST http://localhost:8000/users/login/  HTTP/1.1
+content-type: application/json
+
+{"password": "password", "username": "testuser"}
+
+
+###
+
+
+GET http://localhost:8000/tickets/all/  HTTP/1.1
+
+###
+
+GET http://localhost:8000/tickets/details/  HTTP/1.1
+
+
+
+###
+
+POST http://localhost:8000/users/update/  HTTP/1.1
+content-type: application/json
+
+{
+    "email": "marcusbager@gmail.com",
+    "role": "it-supporter",
+    "is_active": true,
+    "company": [
+        "74021f12f99a47daa1c39c716498f6bf"
+    ]
+}
+
+
+###
+
+POST http://localhost:8000/tickets/create/  HTTP/1.1
+content-type: application/json
+
+{
+    "subject": "Test ticket",
+    "description": "This is a test ticket",
+    "priority": "low",
+    "status": "new",
+    "level": 1,
+    "due_date": "2021-12-12",
+    "service_level_agreement": "e69d31ecc8ad4e398b349ed789ac161c"
+}
+
