@@ -167,7 +167,7 @@ export const Control: React.FC<ControlProps> = ({
       render={({ field }) => (
         <FormItem>
           {label && type !== "checkbox" && (
-            <FormLabel htmlFor={name} className="form-label text-white">
+            <FormLabel htmlFor={name} className="form-label">
               {label}
               {required && (
                 <span className="form-required text-primary ml-1">*</span>
@@ -188,7 +188,7 @@ export const Control: React.FC<ControlProps> = ({
             errors={errors}
             name={name}
             render={({ message }) => (
-              <FormMessage className="form-error !text-secondary">
+              <FormMessage className="form-error">
                 {message}
               </FormMessage>
             )}
