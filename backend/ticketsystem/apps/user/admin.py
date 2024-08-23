@@ -33,6 +33,7 @@ class UserAdmin(DjangoQLSearchMixin, BaseUserAdmin):
                     "is_staff",
                     "is_superuser",
                     "role",
+                    "company",
                     "uuid_hex",
                 ),
             },
