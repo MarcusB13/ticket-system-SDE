@@ -36,8 +36,10 @@ SECRET_KEY = "django-insecure-j66cp0+t(0)g=l0rhdz8#u66(pn_5w+s6l+c@ev%751!jith96
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".mbager.dk"]
+ALLOWED_HOSTS = [".mbager.dk", "localhost"]
+CSRF_TRUSTED_ORIGINS = ["https://*.mbager.dk", "https://*.khog.dk"]
 SHELL_PLUS = "ipython"
+
 
 CUSTOM_APPS = ["user", "ticket"]
 

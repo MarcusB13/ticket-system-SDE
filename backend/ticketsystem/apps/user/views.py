@@ -20,7 +20,7 @@ from .serializers import UserCreatorSerializer, UserSerializer
 class SignUpView(APIView):
     """ """
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = ()
     authentication_classes = ()
     serializer_class = None
 
