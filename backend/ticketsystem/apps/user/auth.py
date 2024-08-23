@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import jwt
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -18,7 +20,7 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):
         jwtKey = request.COOKIES.get("jwt")
-        print(jwtKey)
+
         if jwtKey is None:
             return None
 
@@ -55,4 +57,6 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
             msg = _("Invalid Token")
             raise exceptions.AuthenticationFailed(msg)
 
+        user.last_login = datetime.now()
+        user.save(update_fields=["last_login"])
         return (user, token)
