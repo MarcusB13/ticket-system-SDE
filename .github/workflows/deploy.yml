@@ -22,5 +22,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: "sh /home/marcus/ticketsystem-2024/.scripts/deploy.sh"
