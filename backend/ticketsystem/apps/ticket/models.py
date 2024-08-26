@@ -35,7 +35,7 @@ class Ticket(BaseModel):
         default=TicketStatus.NEW,
     )
     level = models.IntegerField(default=1)
-    due_date = models.DateTimeField(null=True, blank=True)
+    due_date = models.DateTimeField(null=True, blank=True, default=None)
     description = models.TextField()
     service_level_agreement = models.ForeignKey(
         "ticket.ServiceLevelAgreement",
