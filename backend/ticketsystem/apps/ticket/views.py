@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
@@ -97,6 +99,11 @@ class TicketView(APIView):
             ticket = serializer.instance
             ticket.service_level_agreement = serviceLevelAgreement
             ticket.created_by = request.user
+
+            today = datetime.now()
+            ticket.due_date = today + timedelta(
+                days=serviceLevelAgreement.max_response_time
+            )
             ticket.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)

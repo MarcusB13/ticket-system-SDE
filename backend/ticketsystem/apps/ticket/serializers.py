@@ -11,7 +11,7 @@ class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
         model = ServiceLevelAgreement
         fields = (
             "product",
-            "max_respnse_time",
+            "max_response_time",
             "max_resolution_time",
             "is_accepted",
             "company",

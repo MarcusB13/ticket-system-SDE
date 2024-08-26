@@ -35,7 +35,7 @@ class Ticket(BaseModel):
         default=TicketStatus.NEW,
     )
     level = models.IntegerField(default=1)
-    due_date = models.DateTimeField()
+    due_date = models.DateTimeField(null=True, blank=True)
     description = models.TextField()
     service_level_agreement = models.ForeignKey(
         "ticket.ServiceLevelAgreement",
@@ -48,8 +48,8 @@ class Ticket(BaseModel):
 
 class ServiceLevelAgreement(BaseModel):
     product = models.CharField(max_length=128)
-    max_respnse_time = models.IntegerField()
-    max_resolution_time = models.IntegerField()
+    max_response_time = models.IntegerField(default=1)
+    max_resolution_time = models.IntegerField(default=7)
 
     is_accepted = models.BooleanField(default=False)
 
