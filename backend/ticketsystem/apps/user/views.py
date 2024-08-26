@@ -11,6 +11,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from ticket.views import BasicPageination
 
 from .auth import IsPermissionsHigherThanUser
 from .constants import Roles
@@ -89,7 +90,9 @@ class LoginView(APIView):
         return response
 
 
-class UpdateUseView(APIView):
+class UpdateUseView(
+    APIView,
+):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
@@ -114,7 +117,7 @@ class UpdateUseView(APIView):
         )
 
 
-class GetUsersView(APIView):
+class GetUsersView(APIView, BasicPageination):
     permission_classes = (
         IsAuthenticated,
         IsPermissionsHigherThanUser,
@@ -123,9 +126,9 @@ class GetUsersView(APIView):
 
     def get(self, request, *args, **kwargs):
         users = User.objects.filter(is_active=True, deleted_at__isnull=True)
-        return Response(
-            self.serializer_class(users, many=True).data, status=status.HTTP_200_OK
-        )
+
+        data = self.paginate(users, request).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class GetUerView(APIView):

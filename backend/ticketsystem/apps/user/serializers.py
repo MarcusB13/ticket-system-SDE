@@ -27,6 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(read_only=True, format="hex")
     company = serializers.SerializerMethodField(read_only=True)
     username = serializers.CharField()
+    created_at = serializers.DateTimeField(read_only=True)
+    pk = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = User
@@ -37,6 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
             "role",
             "is_active",
             "company",
+            "created_at",
+            "pk",
         )
 
     def get_company(self, obj):
