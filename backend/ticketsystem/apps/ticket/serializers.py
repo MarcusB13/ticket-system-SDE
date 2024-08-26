@@ -45,6 +45,7 @@ class TicketSerializer(serializers.ModelSerializer):
             "created_at",
             "description",
             "service_level_agreement",
+            "pk",
         )
 
 
@@ -62,4 +63,5 @@ class MyTicketSerializer(TicketSerializer):
             "created_at",
             "description",
             "service_level_agreement",
+            "pk",
         )
