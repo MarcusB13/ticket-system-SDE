@@ -12,3 +12,5 @@ class Roles:
         (ITSUPPORT, "IT-Supporter"),
         (DEVELOPER, "Developer"),
     )
+
+    higherThanUser = [ADMIN, SUPPORTER, ITSUPPORT, DEVELOPER]

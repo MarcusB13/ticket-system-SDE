@@ -122,7 +122,7 @@ class GetMyTicketsView(APIView, BasicPageination):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class GetSingleTicketView(APIView):
+class SingleTicketView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = TicketSerializer
 
@@ -130,3 +130,13 @@ class GetSingleTicketView(APIView):
         ticketUuid = kwargs.get("ticket_uuid")
         ticket = get_object_or_404(Ticket, uuid=ticketUuid)
         return Response(self.serializer_class(ticket).data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        ticketUuid = kwargs.get("ticket_uuid")
+        ticket = get_object_or_404(Ticket, uuid=ticketUuid)
+        serializer = self.serializer_class(ticket, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

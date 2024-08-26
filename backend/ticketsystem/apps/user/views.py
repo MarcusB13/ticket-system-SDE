@@ -12,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .auth import IsPermissionsHigherThanUser
+from .constants import Roles
 from .models import Company, User
 from .serializers import UserCreatorSerializer, UserSerializer
 
@@ -109,6 +111,20 @@ class UpdateUseView(APIView):
             return Response(serializer.data)
         return Response(
             {"error": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class GetUsersView(APIView):
+    permission_classes = (
+        IsAuthenticated,
+        IsPermissionsHigherThanUser,
+    )
+    serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        users = User.objects.filter(is_active=True, deleted_at__isnull=True)
+        return Response(
+            self.serializer_class(users, many=True).data, status=status.HTTP_200_OK
         )
 
 

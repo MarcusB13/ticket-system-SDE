@@ -5,7 +5,9 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 from rest_framework import authentication, exceptions
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import BasePermission
 
+from .constants import Roles
 from .models import User
 
 
@@ -60,3 +62,13 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
         user.last_login = datetime.now()
         user.save(update_fields=["last_login"])
         return (user, token)
+
+
+class IsPermissionsHigherThanUser(BasePermission):
+    """
+    Allows access only to authenticated users.
+    """
+
+    def has_permission(self, request, view):
+
+        return bool(request.user.role in Roles.higherThanUser)

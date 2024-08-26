@@ -51,6 +51,14 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^all/$",
+            views.GetUsersView.as_view(),
+            name="get_users_view",
+        )
+    )
+
     return urls
 
 
