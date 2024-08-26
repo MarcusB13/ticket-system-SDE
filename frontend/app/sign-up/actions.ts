@@ -9,14 +9,14 @@ const signUpSchemas = z.object({
   username: usernameSchema,
   email: typeSchemas.email,
   password: typeSchemas.password,
-  confirmPassword: typeSchemas.password,
+  password2: typeSchemas.password,
 });
 
 interface SignUpFormData {
   username: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  password2: string;
 }
 
 export async function signUp(formData: SignUpFormData) {
@@ -30,6 +30,13 @@ export async function signUp(formData: SignUpFormData) {
   }
 
   const data = validation.data;
+
+  if (data.password !== data.password2) {
+    return {
+      error: "Passwords do not match",
+      status: 400,
+    };
+  }
 
   try {
     await axiosInstance.post("/users/signup/", data);
