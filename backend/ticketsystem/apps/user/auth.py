@@ -1,7 +1,6 @@
-from datetime import datetime
-
 import jwt
 from django.conf import settings
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from rest_framework import authentication, exceptions
 from rest_framework.authtoken.models import Token
@@ -59,7 +58,7 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
             msg = _("Invalid Token")
             raise exceptions.AuthenticationFailed(msg)
 
-        user.last_login = datetime.now()
+        user.last_login = timezone.now()
         user.save(update_fields=["last_login"])
         return (user, token)
 

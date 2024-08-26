@@ -53,6 +53,14 @@ def get_urls():
 
     urls.append(
         re_path(
+            r"^assigned-tickets/$",
+            views.MyAssignedTicketsView.as_view(),
+            name="assigned_ticket_view",
+        )
+    )
+
+    urls.append(
+        re_path(
             r"^(?P<ticket_uuid>\w+)/$",
             views.SingleTicketView.as_view(),
             name="ticket_view",

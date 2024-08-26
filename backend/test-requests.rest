@@ -33,6 +33,11 @@ GET http://localhost:8000/tickets/details/  HTTP/1.1
 
 ###
 
+GET http://localhost:8000/tickets/companies/  HTTP/1.1
+
+
+###
+
 GET http://localhost:8000/tickets/my-tickets/  HTTP/1.1
 
 

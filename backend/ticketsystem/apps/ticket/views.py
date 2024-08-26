@@ -138,6 +138,18 @@ class CompaniesView(APIView):
         )
 
 
+class MyAssignedTicketsView(APIView, BasicPageination):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = TicketSerializer
+
+    def get(self, request, *args, **kwargs):
+        tickets = Ticket.objects.filter(
+            assigned_to=request.user, deleted_at__isnull=True
+        )
+        data = self.paginate(tickets, request).data
+        return Response(data, status=status.HTTP_200_OK)
+
+
 class SingleTicketView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = TicketSerializer
