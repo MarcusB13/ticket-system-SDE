@@ -10,27 +10,35 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import Link from "next/link";
 import axiosInstance from "@/lib/api";
-import { redirect } from "next/navigation";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type Priorities = "Low" | "Medium" | "High";
 
 type Status = "New" | "Closed" | "Pending" | "Deleted";
 
+interface TicketDetails {
+  totalTicketsCount: number;
+  deletedTicektsCount: number;
+  inProgressTicketsCount: number;
+  closedTicketsCount: number;
+}
+
 export default async function page() {
-  let user = null;
+  const [ticketDetailsResponse, allTicketsResponse] = await Promise.all([
+    axiosInstance.get("/tickets/details/"),
+    axiosInstance.get("/tickets/all/"),
+  ]);
 
-  try {
-    const response = await axiosInstance.get("/users/current/");
-    user = response.data;
-  } catch (error) {
-    console.error("Error while fetching user data", error);
-  }
-
-  if (!user) {
-    redirect("/sign-up");
-  }
+  const ticketDetails: TicketDetails = ticketDetailsResponse.data;
+  const allTickets = allTicketsResponse.data;
 
   return (
     <div className="space-y-6">
@@ -40,7 +48,9 @@ export default async function page() {
             <PiCirclesFourFill size={30} className="text-blue-500" />
           </div>
           <div className="flex flex-col justify-center ml-3">
-            <span className="font-extrabold text-lg">83457</span>
+            <span className="font-extrabold text-lg">
+              {ticketDetails.totalTicketsCount}
+            </span>
             <p className="text-card-foreground/60 text-sm">Total Tickets</p>
           </div>
         </div>
@@ -49,7 +59,9 @@ export default async function page() {
             <FaHourglassStart size={25} className="text-yellow-500" />
           </div>
           <div className="flex flex-col justify-center ml-3">
-            <span className="font-extrabold text-lg">21457</span>
+            <span className="font-extrabold text-lg">
+              {ticketDetails.inProgressTicketsCount}
+            </span>
             <p className="text-card-foreground/60 text-sm">Pending Tickets</p>
           </div>
         </div>
@@ -58,7 +70,9 @@ export default async function page() {
             <FaLock size={25} className="text-green-500" />
           </div>
           <div className="flex flex-col justify-center ml-3">
-            <span className="font-extrabold text-lg">31457</span>
+            <span className="font-extrabold text-lg">
+              {ticketDetails.closedTicketsCount}
+            </span>
             <p className="text-card-foreground/60 text-sm">Closed Tickets</p>
           </div>
         </div>
@@ -67,7 +81,9 @@ export default async function page() {
             <FaTrash size={25} className="text-red-500" />
           </div>
           <div className="flex flex-col justify-center ml-3">
-            <span className="font-extrabold text-lg">23419</span>
+            <span className="font-extrabold text-lg">
+              {ticketDetails.deletedTicektsCount}
+            </span>
             <p className="text-card-foreground/60 text-sm">Deleted Tickets</p>
           </div>
         </div>
@@ -90,7 +106,20 @@ export default async function page() {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="font-bold">#35653</TableCell>
+              <TableCell className="font-bold">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link className="text-primary" href="/dashboard/tickets/">
+                        #35653
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Edit</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </TableCell>
               <TableCell className="font-medium">Marcus Bager</TableCell>
               <TableCell className="font-medium">Support for theme</TableCell>
               <TableCell>
