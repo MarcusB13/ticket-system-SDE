@@ -5,7 +5,7 @@ from .models import ServiceLevelAgreement, Ticket
 
 
 class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
-    company = CompanySerializer(many=True, read_only=True)
+    company = serializers.SerializerMethodField()
 
     class Meta:
         model = ServiceLevelAgreement
@@ -16,6 +16,11 @@ class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
             "is_accepted",
             "company",
         )
+
+    def get_company(self, obj):
+        company = obj.company.first()
+        data = CompanySerializer(company).data
+        return data
 
 
 class TicketSerializer(serializers.ModelSerializer):
