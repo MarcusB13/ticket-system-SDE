@@ -4,7 +4,11 @@ import { Button } from "../ui/button";
 import { IoSunnyOutline } from "react-icons/io5";
 import UserMenu from "./UserMenu";
 
-export default function Header() {
+interface HeaderProps {
+  user: User;
+}
+
+export default function Header({ user }: HeaderProps) {
   return (
     <div className="flex h-16 flex-none items-center gap-4 bg-background p-4 md:px-8 shadow">
       <nav className="hidden items-center space-x-4 md:flex lg:space-x-6">
@@ -26,9 +30,7 @@ export default function Header() {
         <Button size="icon" variant="ghost" className="rounded-full">
           <IoSunnyOutline size={20} />
         </Button>
-        <UserMenu
-          user={{ name: "Kasper Høg", email: "mailkasperhog@gmail.com" }}
-        />
+        <UserMenu user={user} />
       </div>
     </div>
   );
