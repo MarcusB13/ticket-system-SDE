@@ -110,6 +110,16 @@ class TicketView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetMyTicketsView(APIView, BasicPageination):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = TicketSerializer
+
+    def get(self, request, *args, **kwargs):
+        tickets = Ticket.objects.filter(assigned=request.user, deleted_at__isnull=True)
+        data = self.paginate(tickets, request).data
+        return Response(data, status=status.HTTP_200_OK)
+
+
 class GetSingleTicketView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = TicketSerializer

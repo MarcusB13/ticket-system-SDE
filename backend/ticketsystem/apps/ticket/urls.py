@@ -43,6 +43,14 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^mine/$",
+            views.GetMyTicketsView.as_view(),
+            name="my_ticket_view",
+        )
+    )
+
     return urls
 
 
