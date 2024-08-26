@@ -8,7 +8,7 @@ export default function page() {
     <div className="flex h-screen justify-center items-center">
       <Form
         onSubmit={signUp}
-        redirect="/dashboard"
+        redirect="/dashboard/tickets"
         className="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto max-w-sm mb-20"
       >
         <div className="flex flex-col p-6 space-y-1">
@@ -27,6 +27,7 @@ export default function page() {
               placeholder="Username"
               label="Username"
               name="username"
+              customSchema="username"
               required
             />
             <Control
@@ -47,7 +48,7 @@ export default function page() {
               type="password"
               placeholder="Confirm password"
               label="Confirm password"
-              name="confirmPassword"
+              name="password2"
               required
             />
             <Button text="Login" className="w-full" />
