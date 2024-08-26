@@ -37,17 +37,17 @@ def get_urls():
 
     urls.append(
         re_path(
-            r"^(?P<ticket_uuid>\w+)/$",
-            views.GetSingleTicketView.as_view(),
-            name="ticket_view",
+            r"^my-tickets/$",
+            views.GetMyTicketsView.as_view(),
+            name="my_ticket_view",
         )
     )
 
     urls.append(
         re_path(
-            r"^mine/$",
-            views.GetMyTicketsView.as_view(),
-            name="my_ticket_view",
+            r"^(?P<ticket_uuid>\w+)/$",
+            views.GetSingleTicketView.as_view(),
+            name="ticket_view",
         )
     )
 
