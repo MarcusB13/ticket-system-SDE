@@ -41,6 +41,7 @@ class TicketSerializer(serializers.ModelSerializer):
             "status",
             "level",
             "due_date",
+            "created_at",
             "description",
             "service_level_agreement",
         )
@@ -57,6 +58,7 @@ class MyTicketSerializer(TicketSerializer):
             "status",
             "level",
             "due_date",
+            "created_at",
             "description",
             "service_level_agreement",
         )
