@@ -54,7 +54,6 @@ content-type: application/json
     "priority": "low",
     "status": "new",
     "level": 1,
-    "due_date": "2021-12-12",
     "service_level_agreement": "e69d31ecc8ad4e398b349ed789ac161c"
 }
 
