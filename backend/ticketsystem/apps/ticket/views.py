@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from .constants import TicketStatus
 from .models import ServiceLevelAgreement, Ticket
-from .serializers import TicketSerializer
+from .serializers import MyTicketSerializer, TicketSerializer
 
 
 class BasicPageination(PageNumberPagination):
@@ -112,10 +112,12 @@ class TicketView(APIView):
 
 class GetMyTicketsView(APIView, BasicPageination):
     permission_classes = (IsAuthenticated,)
-    serializer_class = TicketSerializer
+    serializer_class = MyTicketSerializer
 
     def get(self, request, *args, **kwargs):
-        tickets = Ticket.objects.filter(assigned=request.user, deleted_at__isnull=True)
+        tickets = Ticket.objects.filter(
+            created_by=request.user, deleted_at__isnull=True
+        )
         data = self.paginate(tickets, request).data
         return Response(data, status=status.HTTP_200_OK)
 

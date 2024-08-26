@@ -39,3 +39,19 @@ class TicketSerializer(serializers.ModelSerializer):
             "description",
             "service_level_agreement",
         )
+
+
+class MyTicketSerializer(TicketSerializer):
+    class Meta:
+        model = Ticket
+        fields = (
+            "uuid",
+            "subject",
+            "assigned",
+            "created_by",
+            "status",
+            "level",
+            "due_date",
+            "description",
+            "service_level_agreement",
+        )
