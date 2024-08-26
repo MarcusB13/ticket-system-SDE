@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
   to?: string;
+  specific?: boolean;
   children: React.ReactNode;
   activeClass?: string;
   className?: string;
@@ -15,6 +16,7 @@ interface NavLinkProps {
 
 export default function NavLink({
   to = "/",
+  specific = false,
   children,
   activeClass = "active",
   className = "",
@@ -23,10 +25,11 @@ export default function NavLink({
 }: NavLinkProps) {
   const pathname = usePathname();
 
-  const isActive = pathname.startsWith(to);
+  const isActive = specific ? pathname === to : pathname.startsWith(to);
 
-  const combinedClassName =
-    `${className} ${isActive || active ? activeClass : ""}`.trim();
+  const combinedClassName = `${className} ${
+    isActive || active ? activeClass : ""
+  }`.trim();
 
   return (
     <Link href={to} onClick={onClick} className={combinedClassName}>
