@@ -10,7 +10,7 @@ interface useRegisterFieldProps {
   label: string;
   type: string;
   required: boolean;
-  customSchema?: any;
+  customSchema?: string;
 }
 
 export const useRegisterField = ({
@@ -30,8 +30,10 @@ export const useRegisterField = ({
   const { setSchema } = context;
 
   const memoizedSchema = useMemo(() => {
-    let newFieldSchema =
-      customSchema || typeSchemas[type as TypeSchemas] || z.any();
+    let newFieldSchema: any =
+      typeSchemas[customSchema as TypeSchemas] ||
+      typeSchemas[type as TypeSchemas] ||
+      z.any();
 
     if (required) {
       newFieldSchema = newFieldSchema.min(1, {

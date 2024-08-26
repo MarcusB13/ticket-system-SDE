@@ -6,10 +6,13 @@ const passwordSchema = z
   .string()
   .min(8, { message: "Password skal mindst være 8 bogstaver" })
   .max(100, { message: "Password må ikke gå over 100 bogstaver" })
-  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-    message:
-      "Password skal indholde mindst et stor bogstav, et lille bogstav, et tal og et symbol",
-  });
+  .regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    {
+      message:
+        "Password skal indholde mindst et stor bogstav, et lille bogstav, et tal og et symbol",
+    }
+  );
 
 export const postalCodeSchema = z
   .string()
@@ -23,6 +26,7 @@ export const usernameSchema = z
 export const typeSchemas = {
   email: emailSchema,
   password: passwordSchema,
+  username: usernameSchema,
   url: z.string().url("Invalid URL"),
   text: z.string(),
   number: z.coerce.number(),

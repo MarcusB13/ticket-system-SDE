@@ -33,7 +33,7 @@ interface ControlProps {
   required?: boolean;
   options?: any[];
   placeholder?: string;
-  customSchema?: any;
+  customSchema?: string;
   defaultValue?: any;
   [key: string]: any;
 }
