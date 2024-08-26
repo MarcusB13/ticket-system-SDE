@@ -6,10 +6,12 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from user.auth import IsPermissionsHigherThanUser
+from user.models import Company
 
 from .constants import TicketStatus
 from .models import ServiceLevelAgreement, Ticket
-from .serializers import MyTicketSerializer, TicketSerializer
+from .serializers import CompanySerializer, MyTicketSerializer, TicketSerializer
 
 
 class BasicPageination(PageNumberPagination):
@@ -120,6 +122,20 @@ class GetMyTicketsView(APIView, BasicPageination):
         )
         data = self.paginate(tickets, request).data
         return Response(data, status=status.HTTP_200_OK)
+
+
+class CompaniesView(APIView):
+    permission_classes = (
+        IsAuthenticated,
+        IsPermissionsHigherThanUser,
+    )
+    serializer_class = CompanySerializer
+
+    def get(self, request, *args, **kwargs):
+        companies = Company.objects.filter(deleted_at__isnull=True)
+        return Response(
+            self.serializer_class(companies, many=True).data, status=status.HTTP_200_OK
+        )
 
 
 class SingleTicketView(APIView):

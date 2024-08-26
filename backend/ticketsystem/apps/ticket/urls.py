@@ -51,6 +51,14 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^companies/$",
+            views.CompaniesView.as_view(),
+            name="companies_view",
+        )
+    )
+
     return urls
 
 
