@@ -67,6 +67,14 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^solutions/$",
+            views.KnownErrorsView.as_view(),
+            name="ticket_view",
+        )
+    )
+
     return urls
 
 
