@@ -126,7 +126,7 @@ export default async function page({ params }: Props) {
               name="assignee"
               label="Assignee"
               options={[
-                { label: "Unassigned", value: null },
+                { label: "Unassigned", value: "unassigned" },
                 { label: "Me", value: currentUser.uuid },
               ]}
             />

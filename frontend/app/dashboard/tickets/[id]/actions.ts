@@ -10,7 +10,7 @@ interface FormData {
   company: string;
   priority: string;
   status: string;
-  assignee: string;
+  assignee: string | null;
   level: number;
   due_date: Date;
   solution?: string;
@@ -46,6 +46,10 @@ export async function updateTicket(formData: FormData) {
       error: "Solution is required for closed tickets",
       status: 400,
     };
+  }
+
+  if (data.assignee === "unassigned") {
+    data.assignee = null;
   }
 
   try {
