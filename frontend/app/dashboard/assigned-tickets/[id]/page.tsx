@@ -1,7 +1,7 @@
 import React from "react";
 import axiosInstance from "@/lib/api";
 import { Form, Control, Button } from "@/app/plugins/Form";
-import { updateTicket } from "./actions";
+import { updateTicket } from "../../tickets/[id]/actions";
 
 interface Props {
   params: {
@@ -107,12 +107,12 @@ export default async function page({ params }: Props) {
                 {
                   label: "Pending",
                   value: "pending",
-                  itemClassName: "!text-blue-400",
+                  itemClassName: "!text-yellow-400",
                 },
                 {
                   label: "Closed",
                   value: "closed",
-                  itemClassName: "!text-yellow-400",
+                  itemClassName: "!text-blue-400",
                 },
                 {
                   label: "Deleted",
@@ -126,7 +126,7 @@ export default async function page({ params }: Props) {
               name="assignee"
               label="Assignee"
               options={[
-                { label: "Unassigned", value: "unassigned" },
+                { label: "Unassigned", value: null },
                 { label: "Me", value: currentUser.uuid },
               ]}
             />
