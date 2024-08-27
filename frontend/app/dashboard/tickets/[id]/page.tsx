@@ -35,6 +35,7 @@ export default async function page({ params }: Props) {
           status: ticket.status,
           level: ticket.level,
           due_date: ticket.due_date ? new Date(ticket.due_date) : null,
+          solution: ticket.solution,
         }}
         onSubmit={updateTicket}
         className="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto w-2/4"
@@ -126,12 +127,19 @@ export default async function page({ params }: Props) {
               name="assignee"
               label="Assignee"
               options={[
-                { label: "Unassigned", value: "unassigned" },
+                { label: "Unassigned", value: null },
                 { label: "Me", value: currentUser.uuid },
               ]}
             />
             <Control type="number" name="level" label="Level" required />
             <Control type="calender" name="due_date" label="Due date" />
+            <Control
+              type="textarea"
+              name="solution"
+              label="Solution"
+              renderFor="status:closed"
+              placeholder="Please provide the reason for closure"
+            />
             <Button text="Gem" className="w-full" />
           </div>
         </div>

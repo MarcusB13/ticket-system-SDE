@@ -32,7 +32,7 @@ export const typeSchemas = {
   text: z.string(),
   number: z.coerce.number(),
   checkbox: z.boolean(),
-  select: z.string(),
+  select: z.string().nullable(),
   radio: z.string(),
   textarea: z.string(),
   date: z.date(),

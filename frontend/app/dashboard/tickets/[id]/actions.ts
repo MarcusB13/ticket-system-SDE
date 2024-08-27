@@ -13,6 +13,7 @@ interface FormData {
   assignee: string;
   level: number;
   due_date: Date;
+  solution?: string;
 }
 
 const updateScheme = z.object({
@@ -22,9 +23,10 @@ const updateScheme = z.object({
   company: z.string(),
   priority: z.string(),
   status: z.string(),
-  assignee: z.string(),
+  assignee: z.string().nullable(),
   level: z.number(),
   due_date: z.date(),
+  solution: z.string().optional(),
 });
 
 export async function updateTicket(formData: FormData) {
@@ -38,6 +40,13 @@ export async function updateTicket(formData: FormData) {
   }
 
   const { uuid, ...data } = validation.data;
+
+  if (data.status === "closed" && !data.solution) {
+    return {
+      error: "Solution is required for closed tickets",
+      status: 400,
+    };
+  }
 
   try {
     const response = await axiosInstance.post(`/tickets/${uuid}/`, data);

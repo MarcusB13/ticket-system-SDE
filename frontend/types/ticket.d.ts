@@ -11,4 +11,5 @@ interface Ticket {
   service_level_agreement: ServiceLevelAgreement;
   created_at: string;
   pk: number;
+  solution?: string;
 }
