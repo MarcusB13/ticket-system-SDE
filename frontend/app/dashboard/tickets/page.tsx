@@ -18,17 +18,19 @@ import {
 } from "@/components/ui/tooltip";
 import Link from "next/link";
 import axiosInstance from "@/lib/api";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
-type Priorities = "Low" | "Medium" | "High";
-
-type Status = "New" | "Closed" | "Pending" | "Deleted";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Badge from "@/components/Badge";
+import { formatDate, getInitials } from "@/utils/renders";
 
 interface TicketDetails {
   totalTicketsCount: number;
   deletedTicektsCount: number;
   inProgressTicketsCount: number;
   closedTicketsCount: number;
+}
+
+interface TicketPagination extends Pagination {
+  results: Ticket[];
 }
 
 export default async function page() {
@@ -38,7 +40,7 @@ export default async function page() {
   ]);
 
   const ticketDetails: TicketDetails = ticketDetailsResponse.data;
-  const allTickets = allTicketsResponse.data;
+  const allTickets: TicketPagination = allTicketsResponse.data;
 
   return (
     <div className="space-y-6">
@@ -105,45 +107,56 @@ export default async function page() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-bold">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link className="text-primary" href="/dashboard/tickets/">
-                        #35653
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Edit</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </TableCell>
-              <TableCell className="font-medium">Marcus Bager</TableCell>
-              <TableCell className="font-medium">Support for theme</TableCell>
-              <TableCell>
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>KH</AvatarFallback>
-                </Avatar>
-              </TableCell>
-              <TableCell>
-                <div className="bg-orange-100 h-8 flex justify-center items-center rounded-xl">
-                  <span className="text-orange-400 font-bold">Medium</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="bg-green-100 h-8 flex justify-center items-center rounded-xl">
-                  <span className="text-green-400 font-bold">New</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-center">1</TableCell>
-              <TableCell>01/01/2021</TableCell>
-              <TableCell className="font-medium">01/01/2021</TableCell>
-              <TableCell className="flex justify-center">
-                <BsThreeDots size={20} className="text-card-foreground/30" />
-              </TableCell>
-            </TableRow>
+            {allTickets.results.map((ticket) => (
+              <TableRow key={ticket.uuid}>
+                <TableCell className="font-bold">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link
+                          className="text-primary"
+                          href={`/dashboard/tickets/${ticket.uuid}`}
+                        >
+                          {ticket.pk}
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edit</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+                <TableCell className="font-medium">
+                  {ticket.created_by.username}
+                </TableCell>
+                <TableCell className="font-medium">{ticket.subject}</TableCell>
+                <TableCell>
+                  {ticket.assigned ? (
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>
+                        {getInitials(ticket.assigned.username)}
+                      </AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    "Unassigned"
+                  )}
+                </TableCell>
+                <TableCell>
+                  <Badge status={ticket.priority!} />
+                </TableCell>
+                <TableCell>
+                  <Badge status={ticket.status} />
+                </TableCell>
+                <TableCell className="text-center">{ticket.level}</TableCell>
+                <TableCell>{formatDate(ticket.created_at)}</TableCell>
+                <TableCell className="font-medium">
+                  {ticket.due_date ? formatDate(ticket.due_date) : "N/A"}
+                </TableCell>
+                <TableCell className="flex justify-center">
+                  <BsThreeDots size={20} className="text-card-foreground/30" />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
