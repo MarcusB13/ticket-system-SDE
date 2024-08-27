@@ -37,6 +37,7 @@ interface ControlProps {
   customSchema?: string;
   defaultValue?: any;
   renderFor?: string;
+  wrapperClassName?: string;
   [key: string]: any;
 }
 
@@ -52,6 +53,7 @@ export const Control: React.FC<ControlProps> = ({
   customSchema,
   defaultValue,
   renderFor,
+  wrapperClassName,
   ...rest
 }) => {
   const { control, formState, watch } = useFormContext();
@@ -192,7 +194,7 @@ export const Control: React.FC<ControlProps> = ({
       name={name}
       defaultValue={adjustedDefaultValue()}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={wrapperClassName}>
           {label && type !== "checkbox" && (
             <FormLabel htmlFor={name} className="form-label">
               {label}
