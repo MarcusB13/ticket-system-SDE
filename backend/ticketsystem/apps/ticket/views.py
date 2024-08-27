@@ -7,7 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from user.auth import IsPermissionsHigherThanUser
-from user.models import Company
+from user.constants import Roles
+from user.models import Company, User
 
 from .constants import TicketStatus
 from .models import ServiceLevelAgreement, Ticket
@@ -149,7 +150,10 @@ class MyAssignedTicketsView(APIView, BasicPageination):
 
 
 class SingleTicketView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (
+        IsAuthenticated,
+        IsPermissionsHigherThanUser,
+    )
     serializer_class = TicketSerializer
 
     def get(self, request, *args, **kwargs):
@@ -161,8 +165,21 @@ class SingleTicketView(APIView):
         ticketUuid = kwargs.get("ticket_uuid")
         ticket = get_object_or_404(Ticket, uuid=ticketUuid)
         serializer = self.serializer_class(ticket, data=request.data, partial=True)
+        assignee = request.data.get("assignee")
+        assignedUser = User.objects.filter(uuid=assignee).first()
+
+        if assignedUser:
+            if request.user.role != Roles.ADMIN and assignedUser != request.user:
+                return Response(
+                    {"error": "You do not have permission to assign tickets to others"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         if serializer.is_valid():
             serializer.save()
+
+            ticket.assigned = assignedUser
+            ticket.save()
+
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

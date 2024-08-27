@@ -45,6 +45,8 @@ class Ticket(BaseModel):
         null=True,
     )
 
+    solution = models.TextField(null=True, blank=True)
+
 
 class ServiceLevelAgreement(BaseModel):
     product = models.CharField(max_length=128)

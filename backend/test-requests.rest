@@ -24,7 +24,23 @@ GET http://localhost:8000/tickets/all/  HTTP/1.1
 
 ###
 
-GET http://localhost:8000/tickets/4dae0bdf8faf4aca8525c6a7f79f4316/  HTTP/1.1
+GET http://localhost:8000/tickets/5d087900015344a7a884927526c725e9/  HTTP/1.1
+
+
+###
+
+POST http://localhost:8000/tickets/5d087900015344a7a884927526c725e9/  HTTP/1.1
+content-type: application/json
+
+{
+    "subject": "Hello World",
+    "assignee": null,
+    "priority": "low",
+    "status": "closed",
+    "solution": "This is a test solution"
+}
+
+
 
 ###
 

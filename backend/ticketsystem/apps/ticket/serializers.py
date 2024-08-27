@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from user.serializers import CompanySerializer, UserSerializer
 
+from .constants import TicketStatus
 from .models import ServiceLevelAgreement, Ticket
 
 
@@ -45,8 +46,25 @@ class TicketSerializer(serializers.ModelSerializer):
             "created_at",
             "description",
             "service_level_agreement",
+            "solution",
             "pk",
         )
+
+    def validate(self, attrs):
+        status = attrs.get("status")
+        solution = attrs.get("solution")
+
+        if status == TicketStatus.CLOSED and not solution:
+            raise serializers.ValidationError(
+                "Solution is required when closing a ticket"
+            )
+
+        if status == TicketStatus.CLOSED and solution:
+            if len(solution) < 20:
+                raise serializers.ValidationError(
+                    "Solution must be at least 20 characters long"
+                )
+        return attrs
 
 
 class MyTicketSerializer(TicketSerializer):
