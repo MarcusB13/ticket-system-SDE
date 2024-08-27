@@ -27,6 +27,7 @@ export const typeSchemas = {
   email: emailSchema,
   password: passwordSchema,
   username: usernameSchema,
+  calender: z.date(),
   url: z.string().url("Invalid URL"),
   text: z.string(),
   number: z.coerce.number(),

@@ -23,6 +23,7 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
 
 interface ControlProps {
   name: string;
@@ -138,6 +139,15 @@ export const Control: React.FC<ControlProps> = ({
             </div>
           </div>
         );
+      case "calender":
+        return (
+          <Calendar
+            {...field}
+            selected={field.value}
+            onSelect={field.onChange}
+            {...rest}
+          />
+        );
       default:
         return (
           <Input
@@ -188,9 +198,7 @@ export const Control: React.FC<ControlProps> = ({
             errors={errors}
             name={name}
             render={({ message }) => (
-              <FormMessage className="form-error">
-                {message}
-              </FormMessage>
+              <FormMessage className="form-error">{message}</FormMessage>
             )}
           />
         </FormItem>
