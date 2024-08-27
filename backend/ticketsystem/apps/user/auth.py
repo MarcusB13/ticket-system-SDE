@@ -71,3 +71,13 @@ class IsPermissionsHigherThanUser(BasePermission):
     def has_permission(self, request, view):
 
         return bool(request.user.role in Roles.higherThanUser)
+
+
+class IsUserAdmin(BasePermission):
+    """
+    Allows access only to authenticated users.
+    """
+
+    def has_permission(self, request, view):
+
+        return bool(request.user.role == Roles.ADMIN)

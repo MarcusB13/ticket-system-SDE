@@ -59,6 +59,14 @@ def get_urls():
         )
     )
 
+    urls.append(
+        re_path(
+            r"^(?P<user_uuid>\w+)/$",
+            views.SingleUserView.as_view(),
+            name="update_user_view",
+        )
+    )
+
     return urls
 
 

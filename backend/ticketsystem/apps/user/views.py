@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from ticket.views import BasicPageination
 
-from .auth import IsPermissionsHigherThanUser
+from .auth import IsPermissionsHigherThanUser, IsUserAdmin
 from .constants import Roles
 from .models import Company, User
 from .serializers import UserCreatorSerializer, UserSerializer
@@ -146,3 +146,25 @@ class CheckUerTokenView(APIView):
 
     def get(self, request, *args, **kwargs):
         return Response(status=status.HTTP_200_OK)
+
+
+class SingleUserView(APIView):
+    permission_classes = (IsAuthenticated, IsUserAdmin)
+    serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        userUuid = kwargs.get("user_uuid")
+        user = get_object_or_404(User, uuid=userUuid)
+
+        data = self.serializer_class(user).data
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        userUuid = kwargs.get("user_uuid")
+        user = get_object_or_404(User, uuid=userUuid)
+
+        serializer = self.serializer_class(user, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
