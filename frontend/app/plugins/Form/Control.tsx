@@ -77,7 +77,11 @@ export const Control: React.FC<ControlProps> = ({
             </FormControl>
             <SelectContent>
               {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                  className={option.itemClassName || ""}
+                >
                   {option.label}
                 </SelectItem>
               ))}
