@@ -61,16 +61,16 @@ def get_urls():
 
     urls.append(
         re_path(
-            r"^(?P<ticket_uuid>\w+)/$",
-            views.SingleTicketView.as_view(),
+            r"^solutions/$",
+            views.KnownErrorsView.as_view(),
             name="ticket_view",
         )
     )
 
     urls.append(
         re_path(
-            r"^solutions/$",
-            views.KnownErrorsView.as_view(),
+            r"^(?P<ticket_uuid>\w+)/$",
+            views.SingleTicketView.as_view(),
             name="ticket_view",
         )
     )
