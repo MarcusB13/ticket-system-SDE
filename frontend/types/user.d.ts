@@ -5,4 +5,6 @@ interface User {
   role: Roles;
   is_active: boolean;
   company: Company[];
+  created_at: string;
+  pk: number;
 }
