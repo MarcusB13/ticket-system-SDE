@@ -36,6 +36,7 @@ interface ControlProps {
   placeholder?: string;
   customSchema?: string;
   defaultValue?: any;
+  renderFor?: string;
   [key: string]: any;
 }
 
@@ -50,9 +51,10 @@ export const Control: React.FC<ControlProps> = ({
   placeholder = "",
   customSchema,
   defaultValue,
+  renderFor,
   ...rest
 }) => {
-  const { control, formState } = useFormContext();
+  const { control, formState, watch } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
   const { errors } = formState;
 
@@ -60,6 +62,15 @@ export const Control: React.FC<ControlProps> = ({
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const shouldRender = () => {
+    if (!renderFor) return true;
+
+    const [watchedField, watchedValue] = renderFor.split(":");
+    const currentValue = watch(watchedField);
+
+    return currentValue === watchedValue;
   };
 
   const renderInput = (field: any) => {
@@ -172,6 +183,8 @@ export const Control: React.FC<ControlProps> = ({
     }
     return defaultValue || (type === "select" ? options[0]?.value : "");
   };
+
+  if (!shouldRender()) return null;
 
   return (
     <FormField
