@@ -23,7 +23,7 @@ export default async function page() {
       <Form
         item={{ service_level_agreement: user.company[0].service_level_agreement }}
         onSubmit={createTicket}
-        redirect="/dashboard/tickets"
+        redirect="/dashboard/my-tickets"
         className="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto max-w-sm my-20"
       >
         <div className="flex flex-col p-6 space-y-1">
@@ -44,7 +44,7 @@ export default async function page() {
               required
             />
             <Control
-              type="text"
+              type="textarea"
               placeholder="Description"
               label="Description"
               name="description"
