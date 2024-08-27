@@ -11,8 +11,13 @@ from user.constants import Roles
 from user.models import Company, User
 
 from .constants import TicketStatus
-from .models import ServiceLevelAgreement, Ticket
-from .serializers import CompanySerializer, MyTicketSerializer, TicketSerializer
+from .models import KnownError, ServiceLevelAgreement, Ticket
+from .serializers import (
+    CompanySerializer,
+    KnownErrorSerializer,
+    MyTicketSerializer,
+    TicketSerializer,
+)
 
 
 class BasicPageination(PageNumberPagination):
@@ -140,7 +145,7 @@ class CompaniesView(APIView):
 
 
 class MyAssignedTicketsView(APIView, BasicPageination):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsPermissionsHigherThanUser)
     serializer_class = TicketSerializer
 
     def get(self, request, *args, **kwargs):
@@ -183,3 +188,27 @@ class SingleTicketView(APIView):
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class KnownErrorsView(APIView, BasicPageination):
+    permission_classes = (IsAuthenticated, IsPermissionsHigherThanUser)
+    serializer_class = KnownErrorSerializer
+
+    def get(self, request, *args, **kwargs):
+        knownErrors = KnownError.objects.filter(deleted_at__isnull=True)
+        data = self.paginate(knownErrors, request).data
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        error = request.data.get("error")
+
+        ticketUuid = request.data.get("ticket_uuid")
+        ticket = get_object_or_404(Ticket, uuid=ticketUuid)
+        knownError = KnownError.objects.create(
+            error=error,
+            solution_ticket=ticket,
+            created_by=request.user,
+        )
+
+        data = self.serializer_class(knownError).data
+        return Response(data, status=status.HTTP_201_CREATED)

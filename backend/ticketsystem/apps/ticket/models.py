@@ -57,3 +57,26 @@ class ServiceLevelAgreement(BaseModel):
 
     def __str__(self):
         return "{company}".format(company=self.company.first().__str__())
+
+
+class KnownError(BaseModel):
+    error = models.CharField(max_length=255)
+    solution_ticket = models.ForeignKey(
+        Ticket,
+        on_delete=models.CASCADE,
+        related_name="known_errors",
+        blank=True,
+        null=True,
+    )
+
+    creaeted_by = models.ForeignKey(
+        User,
+        on_delete=models.DO_NOTHING,
+        related_name="created_known_errors",
+        null=True,
+        blank=True,
+    )
+    solution = models.TextField()
+
+    def __str__(self):
+        return "{error}".format(error=self.error)

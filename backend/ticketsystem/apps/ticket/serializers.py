@@ -2,7 +2,7 @@ from rest_framework import serializers
 from user.serializers import CompanySerializer, UserSerializer
 
 from .constants import TicketStatus
-from .models import ServiceLevelAgreement, Ticket
+from .models import KnownError, ServiceLevelAgreement, Ticket
 
 
 class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
@@ -82,4 +82,21 @@ class MyTicketSerializer(TicketSerializer):
             "description",
             "service_level_agreement",
             "pk",
+        )
+
+
+class KnownErrorSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(read_only=True, format="hex")
+    solution_ticket = TicketSerializer(read_only=True)
+    created_by = UserSerializer(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = KnownError
+        fields = (
+            "uuid",
+            "error",
+            "solution_ticket",
+            "created_at",
+            "created_by",
         )
