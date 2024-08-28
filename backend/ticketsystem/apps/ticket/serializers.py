@@ -26,7 +26,7 @@ class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(read_only=True, format="hex")
-    assigned = UserSerializer(read_only=False)
+    assigned = UserSerializer(read_only=False, required=False)
     due_date = serializers.DateTimeField(required=False)
     service_level_agreement = ServiceLevelAgreementSerializer(read_only=True)
     created_by = UserSerializer(read_only=True)
