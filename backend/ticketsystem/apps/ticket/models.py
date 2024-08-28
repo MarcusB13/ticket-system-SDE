@@ -69,7 +69,7 @@ class KnownError(BaseModel):
         null=True,
     )
 
-    creaeted_by = models.ForeignKey(
+    created_by = models.ForeignKey(
         User,
         on_delete=models.DO_NOTHING,
         related_name="created_known_errors",
