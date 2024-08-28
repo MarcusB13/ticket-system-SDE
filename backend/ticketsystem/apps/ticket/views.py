@@ -190,6 +190,8 @@ class SingleCompanyView(APIView):
         company = get_object_or_404(Company, uuid=companyUuid, deleted_at__isnull=True)
         data = request.data
 
+        print(data)
+
         serializer = self.serializer_class(company, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
