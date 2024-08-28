@@ -180,12 +180,12 @@ class SingleCompanyView(APIView):
 
     def get(self, request, *args, **kwargs):
         companyUuid = kwargs.get("company_uuid")
-        company = get_object_or_404(Company, uuid=companyUuid)
+        company = get_object_or_404(Company, uuid=companyUuid, deleted_at__isnull=True)
         return Response(self.serializer_class(company).data, status=status.HTTP_200_OK)
 
     def patch(self, request, *args, **kwargs):
         companyUuid = kwargs.get("company_uuid")
-        company = get_object_or_404(Company, uuid=companyUuid)
+        company = get_object_or_404(Company, uuid=companyUuid, deleted_at__isnull=True)
         data = request.data
 
         serializer = self.serializer_class(company, data=data, partial=True)
