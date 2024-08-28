@@ -139,6 +139,15 @@ class GetUerView(APIView):
         user = request.user
         return Response(self.serializer_class(user).data, status=status.HTTP_200_OK)
 
+    def patch(self, request, *args, **kwargs):
+        user = request.user
+
+        serializer = self.serializer_class(user, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CheckUerTokenView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -159,7 +168,7 @@ class SingleUserView(APIView):
         data = self.serializer_class(user).data
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         userUuid = kwargs.get("user_uuid")
         user = get_object_or_404(User, uuid=userUuid)
 
