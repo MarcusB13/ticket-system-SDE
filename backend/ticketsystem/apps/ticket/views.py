@@ -155,10 +155,7 @@ class MyAssignedTicketsView(APIView, BasicPageination):
 
 
 class SingleTicketView(APIView):
-    permission_classes = (
-        IsAuthenticated,
-        IsPermissionsHigherThanUser,
-    )
+    permission_classes = (IsAuthenticated,)
     serializer_class = TicketSerializer
 
     def get(self, request, *args, **kwargs):
@@ -172,6 +169,12 @@ class SingleTicketView(APIView):
         serializer = self.serializer_class(ticket, data=request.data, partial=True)
         assignee = request.data.get("assignee")
         assignedUser = User.objects.filter(uuid=assignee).first()
+
+        if request.user.role not in Roles.higherThanUser:
+            return Response(
+                {"error": "You do not have permission to edit tickets"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         if assignedUser:
             if request.user.role != Roles.ADMIN and assignedUser != request.user:
