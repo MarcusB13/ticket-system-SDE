@@ -81,6 +81,17 @@ class TicketSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "Solution must be at least 20 characters long"
                 )
+
+        note = attrs.get("note")
+        level = attrs.get("level")
+        uuid = attrs.get("uuid")
+        ticket = Ticket.objects.filter(uuid=uuid).first()
+
+        if level != ticket.level:
+            if not note:
+                raise serializers.ValidationError(
+                    "Note is required when changing level"
+                )
         return attrs
 
 
