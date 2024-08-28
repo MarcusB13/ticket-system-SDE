@@ -44,23 +44,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 SHELL_PLUS = "ipython"
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
-
-DEFAULT_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
-
-CORS_ALLOW_HEADERS = list(DEFAULT_HEADERS) + [
-    "credentials",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 CUSTOM_APPS = ["user", "ticket"]
 
