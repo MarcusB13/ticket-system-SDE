@@ -44,6 +44,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 SHELL_PLUS = "ipython"
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
     "https://*.mbager.dk",
     "https://*.khog.dk",
