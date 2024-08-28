@@ -63,6 +63,7 @@ class TicketSerializer(serializers.ModelSerializer):
             "description",
             "service_level_agreement",
             "solution",
+            "note",
             "pk",
         )
 

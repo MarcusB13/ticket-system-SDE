@@ -46,6 +46,7 @@ class Ticket(BaseModel):
     )
 
     solution = models.TextField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
 
 
 class ServiceLevelAgreement(BaseModel):
