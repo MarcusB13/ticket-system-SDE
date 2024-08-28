@@ -36,7 +36,7 @@ SECRET_KEY = "django-insecure-j66cp0+t(0)g=l0rhdz8#u66(pn_5w+s6l+c@ev%751!jith96
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".mbager.dk", "localhost"]
+ALLOWED_HOSTS = [".mbager.dk", "localhost", "localhost:3000"]
 CSRF_TRUSTED_ORIGINS = [
     "https://*.mbager.dk",
     "https://*.khog.dk",
@@ -45,6 +45,11 @@ CSRF_TRUSTED_ORIGINS = [
 SHELL_PLUS = "ipython"
 
 CORS_ALLOWED_ORIGINS = [
+    "https://*.mbager.dk",
+    "https://*.khog.dk",
+    "http://localhost:3000",
+]
+CSRF_TRUSTED_ORIGINS = [
     "https://*.mbager.dk",
     "https://*.khog.dk",
     "http://localhost:3000",
@@ -74,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "ticketsystem.urls"
