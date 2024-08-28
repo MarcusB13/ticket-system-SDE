@@ -17,6 +17,7 @@ class CompanySerializer(serializers.ModelSerializer):
             "email",
             "vat_no",
             "service_level_agreement",
+            "pk",
         )
 
     def get_service_level_agreement(self, obj):

@@ -23,6 +23,8 @@ class Company(BaseModel):
         "ticket.ServiceLevelAgreement",
         on_delete=models.DO_NOTHING,
         related_name="company",
+        null=True,
+        blank=True,
     )
 
     def __str__(self):

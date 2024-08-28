@@ -16,6 +16,7 @@ from .serializers import (
     CompanySerializer,
     KnownErrorSerializer,
     MyTicketSerializer,
+    ServiceLevelAgreementSerializer,
     TicketSerializer,
 )
 
@@ -141,6 +142,71 @@ class CompaniesView(APIView):
         companies = Company.objects.filter(deleted_at__isnull=True)
         return Response(
             self.serializer_class(companies, many=True).data, status=status.HTTP_200_OK
+        )
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            company = serializer.instance
+
+            serviceLevelAgreementData = data.get("service_level_agreement")
+            agreementSerializer = ServiceLevelAgreementSerializer(
+                data=serviceLevelAgreementData
+            )
+            if agreementSerializer.is_valid():
+                agreementSerializer.save()
+
+                company.service_level_agreement = agreementSerializer.instance
+                company.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            company.delete()
+            return Response(
+                agreementSerializer.error_messages, status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(
+            {"error": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class SingleCompanyView(APIView):
+    permission_classes = (
+        IsAuthenticated,
+        IsPermissionsHigherThanUser,
+    )
+    serializer_class = CompanySerializer
+
+    def get(self, request, *args, **kwargs):
+        companyUuid = kwargs.get("company_uuid")
+        company = get_object_or_404(Company, uuid=companyUuid)
+        return Response(self.serializer_class(company).data, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        companyUuid = kwargs.get("company_uuid")
+        company = get_object_or_404(Company, uuid=companyUuid)
+        data = request.data
+
+        serializer = self.serializer_class(company, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+            serviceLevelAgreementData = data.get("service_level_agreement")
+            agreementSerializer = ServiceLevelAgreementSerializer(
+                company.service_level_agreement,
+                data=serviceLevelAgreementData,
+                partial=True,
+            )
+            if agreementSerializer.is_valid():
+                agreementSerializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(
+                agreementSerializer.error_messages, status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(
+            {"error": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST
         )
 
 
