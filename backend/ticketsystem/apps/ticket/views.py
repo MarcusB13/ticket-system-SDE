@@ -294,7 +294,7 @@ class SearchTicketsView(APIView, BasicPageination):
         query = request.query_params
         search = query.get("query")
         tickets = Ticket.objects.filter(
-            title__icontains=search, deleted_at__isnull=True
+            subject__icontains=search, deleted_at__isnull=True
         )
         data = self.paginate(tickets, request).data
         return Response(data, status=status.HTTP_200_OK)

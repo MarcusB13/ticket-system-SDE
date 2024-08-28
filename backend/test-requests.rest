@@ -39,6 +39,9 @@ content-type: application/json
     "status": "closed",
     "solution": "This is a test solution"
 }
+###
+
+GET http://localhost:8000/tickets/search/?query=Hej  HTTP/1.1
 
 
 
