@@ -187,6 +187,7 @@ class SingleCompanyView(APIView):
 
     def patch(self, request, *args, **kwargs):
         companyUuid = kwargs.get("company_uuid")
+        print(companyUuid)
         company = get_object_or_404(Company, uuid=companyUuid, deleted_at__isnull=True)
         data = request.data
 
