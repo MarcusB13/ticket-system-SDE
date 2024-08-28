@@ -116,7 +116,7 @@ class GetUsersView(APIView, BasicPageination):
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
-        users = User.objects.filter(is_active=True, deleted_at__isnull=True)
+        users = User.objects.filter(deleted_at__isnull=True)
 
         data = self.paginate(users, request).data
         return Response(data, status=status.HTTP_200_OK)
@@ -159,7 +159,9 @@ class SingleUserView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            companies = data.get("company")
+            companies = data.get("company", [])
+            if isinstance(companies, str):
+                companies = [companies]
             user.company.clear()
             for companyUuid in companies:
                 company = Company.objects.filter(uuid=companyUuid).first()
