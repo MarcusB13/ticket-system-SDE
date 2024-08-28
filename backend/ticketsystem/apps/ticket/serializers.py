@@ -6,11 +6,13 @@ from .models import KnownError, ServiceLevelAgreement, Ticket
 
 
 class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(read_only=True, format="hex")
     company = serializers.SerializerMethodField()
 
     class Meta:
         model = ServiceLevelAgreement
         fields = (
+            "uuid",
             "product",
             "max_response_time",
             "max_resolution_time",
@@ -25,9 +27,12 @@ class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
 
 
 class LightServiceLevelAgreementSerializer(ServiceLevelAgreementSerializer):
+    uuid = serializers.UUIDField(read_only=True, format="hex")
+
     class Meta:
         model = ServiceLevelAgreement
         fields = (
+            "uuid",
             "product",
             "max_response_time",
             "max_resolution_time",

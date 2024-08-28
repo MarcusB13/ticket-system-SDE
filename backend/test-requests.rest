@@ -46,6 +46,32 @@ content-type: application/json
 
 GET http://localhost:8000/tickets/details/  HTTP/1.1
 
+###
+
+GET http://localhost:8000/tickets/company/74021f12f99a47daa1c39c716498f6bf/  HTTP/1.1
+
+
+###
+
+PATCH http://localhost:8000/tickets/company/74021f12f99a47daa1c39c716498f6bf/  HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Instamatch",
+    "city": "Odense",
+    "address": "ODense vej",
+    "email": "info@instamatch.dk",
+    "vat_no": "DK12321313",
+    "service_level_agreement": {
+        "product": "ComputerService",
+        "max_response_time": 1,
+        "max_resolution_time": 22,
+        "is_accepted": true
+    }
+}
+
+
+
 
 ###
 

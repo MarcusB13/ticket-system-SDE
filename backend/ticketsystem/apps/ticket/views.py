@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from user.auth import IsPermissionsHigherThanUser
+from user.auth import IsPermissionsHigherThanUser, IsUserAdmin
 from user.constants import Roles
 from user.models import Company, User
 
@@ -187,11 +187,8 @@ class SingleCompanyView(APIView):
 
     def patch(self, request, *args, **kwargs):
         companyUuid = kwargs.get("company_uuid")
-        print(companyUuid)
         company = get_object_or_404(Company, uuid=companyUuid, deleted_at__isnull=True)
         data = request.data
-
-        print(data)
 
         serializer = self.serializer_class(company, data=data, partial=True)
         if serializer.is_valid():
@@ -286,3 +283,17 @@ class KnownErrorsView(APIView, BasicPageination):
 
         data = self.serializer_class(knownError).data
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+class SearchTicketsView(APIView, BasicPageination):
+    permission_classes = (IsAuthenticated, IsPermissionsHigherThanUser)
+    serializer_class = TicketSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        search = data.get("search")
+        tickets = Ticket.objects.filter(
+            title__icontains=search, deleted_at__isnull=True
+        )
+        data = self.paginate(tickets, request).data
+        return Response(data, status=status.HTTP_200_OK)
