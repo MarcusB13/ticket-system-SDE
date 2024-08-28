@@ -21,7 +21,12 @@ class CompanySerializer(serializers.ModelSerializer):
         )
 
     def get_service_level_agreement(self, obj):
-        return obj.service_level_agreement.uuid.hex
+        from ticket.serializers import LightServiceLevelAgreementSerializer
+
+        serviceLevelAgreement = obj.service_level_agreement
+        if serviceLevelAgreement:
+            return LightServiceLevelAgreementSerializer(serviceLevelAgreement).data
+        return None
 
 
 class UserSerializer(serializers.ModelSerializer):

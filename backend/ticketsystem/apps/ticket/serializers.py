@@ -24,6 +24,17 @@ class ServiceLevelAgreementSerializer(serializers.ModelSerializer):
         return data
 
 
+class LightServiceLevelAgreementSerializer(ServiceLevelAgreementSerializer):
+    class Meta:
+        model = ServiceLevelAgreement
+        fields = (
+            "product",
+            "max_response_time",
+            "max_resolution_time",
+            "is_accepted",
+        )
+
+
 class TicketSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(read_only=True, format="hex")
     assigned = UserSerializer(read_only=False, required=False)
