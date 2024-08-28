@@ -44,7 +44,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 SHELL_PLUS = "ipython"
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://*.mbager.dk",
+    "https://*.khog.dk",
+    "http://localhost:3000",
+]
 
 CUSTOM_APPS = ["user", "ticket"]
 
@@ -56,6 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "django_extensions",
     "rest_framework",
     "rest_framework.authtoken",
