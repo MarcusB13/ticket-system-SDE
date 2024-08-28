@@ -84,7 +84,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         note = attrs.get("note")
         level = attrs.get("level")
-        uuid = attrs.get("uuid")
+        uuid = self.instance.uuid
         ticket = Ticket.objects.filter(uuid=uuid).first()
 
         if level != ticket.level:
