@@ -99,4 +99,5 @@ class KnownErrorSerializer(serializers.ModelSerializer):
             "solution_ticket",
             "created_at",
             "created_by",
+            "pk",
         )
