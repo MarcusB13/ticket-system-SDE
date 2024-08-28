@@ -54,7 +54,7 @@ def get_urls():
     urls.append(
         re_path(
             r"^company/(?P<company_uuid>\w+)/$",
-            views.CompaniesView.as_view(),
+            views.SingleCompanyView.as_view(),
             name="companies_view",
         )
     )
