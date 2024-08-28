@@ -77,6 +77,14 @@ def get_urls():
 
     urls.append(
         re_path(
+            r"^search/$",
+            views.SearchTicketsView.as_view(),
+            name="ticket_search_view",
+        )
+    )
+
+    urls.append(
+        re_path(
             r"^(?P<ticket_uuid>\w+)/$",
             views.SingleTicketView.as_view(),
             name="ticket_view",

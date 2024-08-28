@@ -288,10 +288,11 @@ class KnownErrorsView(APIView, BasicPageination):
 class SearchTicketsView(APIView, BasicPageination):
     permission_classes = (IsAuthenticated, IsPermissionsHigherThanUser)
     serializer_class = TicketSerializer
+    page_size = 10
 
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        search = data.get("search")
+    def get(self, request, *args, **kwargs):
+        query = request.query_params
+        search = query.get("search")
         tickets = Ticket.objects.filter(
             title__icontains=search, deleted_at__isnull=True
         )
