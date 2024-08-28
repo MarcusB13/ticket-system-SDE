@@ -292,7 +292,7 @@ class SearchTicketsView(APIView, BasicPageination):
 
     def get(self, request, *args, **kwargs):
         query = request.query_params
-        search = query.get("search")
+        search = query.get("query")
         tickets = Ticket.objects.filter(
             title__icontains=search, deleted_at__isnull=True
         )
