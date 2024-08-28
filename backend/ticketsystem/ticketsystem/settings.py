@@ -44,6 +44,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 SHELL_PLUS = "ipython"
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
 
 CUSTOM_APPS = ["user", "ticket"]
 
