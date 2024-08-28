@@ -30,7 +30,7 @@ def get_urls():
     urls.append(
         re_path(
             r"^update/$",
-            views.UpdateUseView.as_view(),
+            views.UpdateUserView.as_view(),
             name="update_user_view",
         )
     )
