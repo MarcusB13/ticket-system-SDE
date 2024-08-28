@@ -16,7 +16,7 @@ from ticket.views import BasicPageination
 from .auth import IsPermissionsHigherThanUser, IsUserAdmin
 from .constants import Roles
 from .models import Company, User
-from .serializers import UserCreatorSerializer, UserSerializer
+from .serializers import AdminUserSerializer, UserCreatorSerializer, UserSerializer
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -102,15 +102,6 @@ class UpdateUserView(
         serializer = self.serializer_class(user, data=inputData, partial=True)
         if serializer.is_valid():
             serializer.save()
-
-            companies = inputData.get("company")
-            user.company.clear()
-            for companyUuid in companies:
-                company = Company.objects.filter(uuid=companyUuid).first()
-                if not company:
-                    continue
-                user.company.add(company)
-
             return Response(serializer.data)
         return Response(
             {"error": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST
@@ -150,7 +141,7 @@ class CheckUerTokenView(APIView):
 
 class SingleUserView(APIView):
     permission_classes = (IsAuthenticated, IsUserAdmin)
-    serializer_class = UserSerializer
+    serializer_class = AdminUserSerializer
 
     def get(self, request, *args, **kwargs):
         userUuid = kwargs.get("user_uuid")
@@ -167,5 +158,14 @@ class SingleUserView(APIView):
         serializer = self.serializer_class(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
+
+            companies = data.get("company")
+            user.company.clear()
+            for companyUuid in companies:
+                company = Company.objects.filter(uuid=companyUuid).first()
+                if not company:
+                    continue
+                user.company.add(company)
+
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)

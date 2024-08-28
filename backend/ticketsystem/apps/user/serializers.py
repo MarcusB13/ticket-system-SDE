@@ -29,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
     created_at = serializers.DateTimeField(read_only=True)
     pk = serializers.IntegerField(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = User
@@ -48,6 +49,23 @@ class UserSerializer(serializers.ModelSerializer):
         for company in obj.company.all():
             data.append(CompanySerializer(company).data)
         return data
+
+
+class AdminUserSerializer(UserSerializer):
+    is_active = serializers.BooleanField(read_only=False)
+
+    class Meta:
+        model = User
+        fields = (
+            "uuid",
+            "username",
+            "email",
+            "role",
+            "is_active",
+            "company",
+            "created_at",
+            "pk",
+        )
 
 
 class UserCreatorSerializer(UserSerializer):
