@@ -21,7 +21,7 @@ export default async function DashboardLayout({
     console.error("Error while fetching user data", error);
   }
 
-  if (!user) {
+  if (!user || !user.is_active) {
     redirect("/sign-up");
   }
 

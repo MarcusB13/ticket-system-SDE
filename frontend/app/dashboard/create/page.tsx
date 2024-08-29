@@ -21,7 +21,10 @@ export default async function page() {
   return (
     <div className="flex justify-center">
       <Form
-        item={{ service_level_agreement: user.company[0].service_level_agreement }}
+        item={{
+          service_level_agreement:
+            user.company[0].service_level_agreement?.uuid,
+        }}
         onSubmit={createTicket}
         redirect="/dashboard/my-tickets"
         className="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto max-w-sm my-20"
