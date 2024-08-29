@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const emailSchema = z.string().email({ message: "Indtast gyldig e-mail" });
+export const emailSchema = z.string().email({ message: "Indtast gyldig e-mail" });
 
 const passwordSchema = z
   .string()

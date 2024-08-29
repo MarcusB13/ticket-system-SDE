@@ -25,7 +25,7 @@ export const FormContext = createContext<FormContextType | null>(null);
 
 interface FormProps {
   children: ReactNode;
-  onSubmit: (data: any) => Promise<Response>;
+  onSubmit?: (data: any) => Promise<Response>;
   item?: any;
   method?: string;
   action?: string;
@@ -65,7 +65,9 @@ export const Form: React.FC<FormProps> = ({
   }, [item, methods]);
 
   const handleFormSubmit: SubmitHandler<any> = async (data) => {
-    const submissionData = { ...item, ...data };
+    if (!onSubmit) {
+      return;
+    }
     const response: Response = await onSubmit(submissionData);
 
     const error = response?.error;

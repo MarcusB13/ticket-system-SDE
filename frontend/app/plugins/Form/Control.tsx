@@ -82,6 +82,7 @@ export const Control: React.FC<ControlProps> = ({
           <Select
             onValueChange={field.onChange}
             defaultValue={field.value || options[0]?.value}
+            disabled={rest.disabled}
           >
             <FormControl>
               <SelectTrigger>
