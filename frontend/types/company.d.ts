@@ -5,5 +5,6 @@ interface Company {
     address: string;
     email: string;
     vat_no: string;
-    service_level_agreement: string;
+    service_level_agreement: ServiceLevelAgreement;
+    pk: number;
 }

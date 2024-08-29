@@ -1,4 +1,5 @@
 interface ServiceLevelAgreement {
+  uuid: string;
   product: string;
   max_response_time: number;
   max_resolution_time: number;
