@@ -78,10 +78,19 @@ export const Control: React.FC<ControlProps> = ({
   const renderInput = (field: any) => {
     switch (type) {
       case "select":
+        let defaultValue = !placeholder ? options[0]?.value : "";
+
+        if (
+          type === "select" &&
+          options.some((option) => option.value === field.value)
+        ) {
+          defaultValue = field.value;
+        }
+
         return (
           <Select
             onValueChange={field.onChange}
-            defaultValue={field.value || options[0]?.value}
+            defaultValue={defaultValue}
             disabled={rest.disabled}
           >
             <FormControl>
