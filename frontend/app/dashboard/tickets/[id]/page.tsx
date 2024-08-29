@@ -1,6 +1,7 @@
 import React from "react";
 import axiosInstance from "@/lib/api";
 import { Form, Control, Button } from "@/app/plugins/Form";
+import SolutionDialog from "./SolutionDialog";
 import { updateTicket } from "./actions";
 
 interface Props {
@@ -163,7 +164,11 @@ export default async function page({ params }: Props) {
                 wrapperClassName="col-span-1"
               />
             </div>
-            <Button text="Gem" className="w-full" />
+            <Button text="Save" className="w-full" />
+            <SolutionDialog
+              ticket_uuid={ticket.uuid}
+              renderFor="status:closed"
+            />
           </div>
         </div>
       </Form>
