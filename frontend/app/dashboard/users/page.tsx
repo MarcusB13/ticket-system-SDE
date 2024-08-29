@@ -49,7 +49,8 @@ export default async function page() {
           {users.results.map((user) => (
             <TableRow key={user.uuid}>
               <TableCell className="font-bold">
-                {user.role === "admin" || user.uuid === currentUser.uuid ? (
+                {currentUser.role === "admin" ||
+                user.uuid === currentUser.uuid ? (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
