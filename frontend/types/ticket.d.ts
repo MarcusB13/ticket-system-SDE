@@ -12,4 +12,5 @@ interface Ticket {
   created_at: string;
   pk: number;
   solution?: string;
+  note: string;
 }
