@@ -10,8 +10,14 @@ interface Props {
   };
 }
 
+interface UsersPagination extends Pagination {
+  results: User[];
+}
+
 export default async function page({ params }: Props) {
   const id = params?.id;
+
+  let users: UsersPagination | null = null;
 
   const [userResponse, ticketResponse, companiesResponse] = await Promise.all([
     axiosInstance.get("/users/current/"),
@@ -22,6 +28,11 @@ export default async function page({ params }: Props) {
   const currentUser: User = userResponse.data;
   const ticket: Ticket = ticketResponse.data;
   const companies: Company[] = companiesResponse.data;
+
+  if (currentUser.role === "admin") {
+    const usersResponse = await axiosInstance.get("/users/all/");
+    users = usersResponse.data;
+  }
 
   return (
     <div className="flex justify-center">
@@ -37,6 +48,8 @@ export default async function page({ params }: Props) {
           level: ticket.level,
           due_date: ticket.due_date ? new Date(ticket.due_date) : null,
           solution: ticket.solution || "",
+          note: ticket.note || "",
+          oldLevel: ticket.level,
         }}
         onSubmit={updateTicket}
         className="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto w-3/4"
@@ -80,9 +93,15 @@ export default async function page({ params }: Props) {
                 type="select"
                 name="assignee"
                 label="Assignee"
+                placeholder={ticket.assigned?.username}
                 options={[
                   { label: "Unassigned", value: "unassigned" },
-                  { label: "Me", value: currentUser.uuid },
+                  ...(users
+                    ? users?.results.map((user) => ({
+                        label: user.username,
+                        value: user.uuid,
+                      }))
+                    : [{ label: "Me", value: currentUser.uuid }]),
                 ]}
               />
             </div>
@@ -146,6 +165,12 @@ export default async function page({ params }: Props) {
                 wrapperClassName="col-span-1"
               />
             </div>
+            <Control
+              type="textarea"
+              name="note"
+              label="Note"
+              placeholder="Add a note"
+            />
             <div className="gap-2 grid grid-cols-2">
               <Control
                 type="calender"
