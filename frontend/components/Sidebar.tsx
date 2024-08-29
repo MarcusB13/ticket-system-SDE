@@ -1,8 +1,10 @@
 import React from "react";
 import { Button } from "./ui/button";
 import NavLink from "./NavLink";
-import { FaList } from "react-icons/fa";
+import { FaList, FaUsers } from "react-icons/fa";
 import { FiChevronsLeft } from "react-icons/fi";
+import { HiBuildingOffice2 } from "react-icons/hi2";
+import { TbBulbFilled } from "react-icons/tb";
 
 interface SidebarProps {
   user: User;
@@ -10,6 +12,7 @@ interface SidebarProps {
 
 export default function Sidebar({ user }: SidebarProps) {
   const lowAccess = user.role === "user";
+  const isAdmin = user.role === "admin";
 
   return (
     <aside className="fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh md:w-64">
@@ -50,9 +53,18 @@ export default function Sidebar({ user }: SidebarProps) {
                   className="inline-flex items-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-background text-secondary-foreground shadow-sm hover:bg-secondary text-base h-12 justify-start text-wrap rounded-none px-6 from-primary to-primary/70 [&.active]:bg-gradient-to-r [&.active]:text-white"
                 >
                   <div className="mr-2">
-                    <FaList size={18} />
+                    <FaUsers size={18} />
                   </div>
                   Users
+                </NavLink>
+                <NavLink
+                  to="/dashboard/solutions"
+                  className="inline-flex items-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-background text-secondary-foreground shadow-sm hover:bg-secondary text-base h-12 justify-start text-wrap rounded-none px-6 from-primary to-primary/70 [&.active]:bg-gradient-to-r [&.active]:text-white"
+                >
+                  <div className="mr-2">
+                    <TbBulbFilled size={18} />
+                  </div>
+                  Solutions
                 </NavLink>
               </>
             ) : (
@@ -77,11 +89,23 @@ export default function Sidebar({ user }: SidebarProps) {
                 </NavLink>
               </>
             )}
+            {isAdmin && (
+              <NavLink
+                to="/dashboard/companies"
+                className="inline-flex items-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-background text-secondary-foreground shadow-sm hover:bg-secondary text-base h-12 justify-start text-wrap rounded-none px-6 from-primary to-primary/70 [&.active]:bg-gradient-to-r [&.active]:text-white"
+              >
+                <div className="mr-2">
+                  <HiBuildingOffice2 size={18} />
+                </div>
+                Companies
+              </NavLink>
+            )}
           </nav>
         </div>
         <Button
           size="icon"
           variant="outline"
+          aria-label="Collapse sidebar"
           className="absolute -right-5 top-1/2 hidden rounded-full md:inline-flex"
         >
           <FiChevronsLeft className={`h-5 w-5`} />
