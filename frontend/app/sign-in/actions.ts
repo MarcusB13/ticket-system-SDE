@@ -30,7 +30,7 @@ export const signIn = withValidation(signInSchema, async (validatedData) => {
     }
 
     return {
-      success: "You have successfully signed up!",
+      success: "You have successfully signed in!",
       status: 200,
     };
   } catch (error) {
