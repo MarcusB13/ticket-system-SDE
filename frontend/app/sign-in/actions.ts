@@ -5,31 +5,16 @@ import { typeSchemas, usernameSchema } from "../plugins/Form/schemas";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import axiosInstance from "@/lib/api";
+import { withValidation } from "../plugins/Form/withValidation";
 
 const signInSchema = z.object({
   username: usernameSchema,
   password: typeSchemas.password,
 });
 
-interface SignUpFormData {
-  username: string;
-  password: string;
-}
-
-export async function signIn(formData: SignUpFormData) {
-  const validation = signInSchema.safeParse(formData);
-
-  if (!validation.success) {
-    return {
-      error: "Missing one or more fields",
-      status: 400,
-    };
-  }
-
-  const data = validation.data;
-
+export const signIn = withValidation(signInSchema, async (validatedData) => {
   try {
-    const reponse = await axiosInstance.post("/users/login/", data);
+    const reponse = await axiosInstance.post("/users/login/", validatedData);
 
     const cookiesReponse = reponse.headers["set-cookie"];
 
@@ -56,4 +41,4 @@ export async function signIn(formData: SignUpFormData) {
       return { error: "An error occured, try again.", status: 500 };
     }
   }
-}
+});

@@ -14,6 +14,7 @@ import { z, ZodTypeAny, ZodSchema } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import debounce from "lodash.debounce";
+import { getCsrfTokenFromCookie } from "./utils";
 
 import "./styles.css";
 
@@ -26,6 +27,7 @@ interface Response {
   error?: string;
   success?: string;
   status?: number;
+  validationErrors?: { path: string[]; message: string }[];
 }
 
 export const FormContext = createContext<FormContextType | null>(null);
@@ -62,6 +64,13 @@ export const Form: React.FC<FormProps> = ({
   className,
 }) => {
   const router = useRouter();
+
+  const [csrfToken, setCsrfToken] = useState<string>("");
+
+  useEffect(() => {
+    const token = getCsrfTokenFromCookie();
+    setCsrfToken(token);
+  }, []);
 
   const [schema, setSchema] = useState<ZodSchema<any>>(z.object({}));
 
@@ -140,9 +149,21 @@ export const Form: React.FC<FormProps> = ({
     const error = response?.error;
     const success = response?.success;
     const status = response?.status;
+    const validationErrors = response?.validationErrors;
 
     if (error) {
-      toast.error(error);
+      if (validationErrors) {
+        validationErrors.forEach((validationError) => {
+          methods.setError(validationError.path.join("."), {
+            type: "server",
+            message: validationError.message,
+          });
+        });
+      } else {
+        toast.error(error);
+      }
+
+      return;
     } else if (success) {
       toast.success(success);
     }
