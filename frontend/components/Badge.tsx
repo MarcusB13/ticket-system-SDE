@@ -13,9 +13,17 @@ export default function Badge({ status }: BadgeProps): JSX.Element {
       bgColor = "bg-green-100";
       textColor = "text-green-400";
       break;
-    case "closed":
+    case "pending":
       bgColor = "bg-blue-100";
       textColor = "text-blue-400";
+      break;
+    case "closed":
+      bgColor = "bg-yellow-100";
+      textColor = "text-yellow-400";
+      break;
+    case "deleted":
+      bgColor = "bg-red-100";
+      textColor = "text-red-400";
       break;
     case "low":
       bgColor = "bg-yellow-100";
