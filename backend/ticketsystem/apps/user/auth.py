@@ -24,8 +24,9 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
 
         if jwtKey is None:
             jwtKey = authentication.get_authorization_header(request).split()
-            if jwtKey is None:
+            if jwtKey is None or len(jwtKey) != 2:
                 return None
+
             if jwtKey[0].decode() != self.keyword:
                 return None
             jwtKey = jwtKey[1]
