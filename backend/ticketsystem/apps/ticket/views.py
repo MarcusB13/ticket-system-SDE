@@ -245,11 +245,14 @@ class SingleTicketView(APIView):
             )
 
         if assignedUser:
-            if request.user.role != Roles.ADMIN and assignedUser != request.user:
-                return Response(
-                    {"error": "You do not have permission to assign tickets to others"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+            if assignedUser != ticket.assigned:
+                if request.user.role != Roles.ADMIN and assignedUser != request.user:
+                    return Response(
+                        {
+                            "error": "You do not have permission to assign tickets to others"
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
         if serializer.is_valid():
             serializer.save()
