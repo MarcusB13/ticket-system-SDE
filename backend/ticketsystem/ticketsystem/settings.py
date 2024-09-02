@@ -49,11 +49,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://*.mbager.dk",
     "https://*.khog.dk",
+    "https://ticketsystem.khog.dk",
     "http://localhost:3000",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://*.mbager.dk",
     "https://*.khog.dk",
+    "https://ticketsystem.khog.dk",
     "http://localhost:3000",
 ]
 
