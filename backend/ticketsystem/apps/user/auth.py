@@ -23,7 +23,9 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
         jwtKey = request.COOKIES.get("jwt")
 
         if jwtKey is None:
-            return None
+            jwtKey = authentication.get_authorization_header(request).split()
+            if jwtKey is None:
+                return None
 
         try:
             userDetails = jwt.decode(jwtKey, settings.SECRET_KEY, algorithms="HS256")
