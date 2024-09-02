@@ -28,7 +28,7 @@ export default function Header({ user }: HeaderProps) {
         {
           withCredentials: true,
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            Authorization: `Token ${jwt}`,
           }
         }
       );
