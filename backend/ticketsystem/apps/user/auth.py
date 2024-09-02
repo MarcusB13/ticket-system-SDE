@@ -26,6 +26,9 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
             jwtKey = authentication.get_authorization_header(request).split()
             if jwtKey is None:
                 return None
+            if jwtKey[0].decode() != self.keyword:
+                return None
+            jwtKey = jwtKey[1]
 
         try:
             userDetails = jwt.decode(jwtKey, settings.SECRET_KEY, algorithms="HS256")
