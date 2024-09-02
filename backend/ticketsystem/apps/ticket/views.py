@@ -62,7 +62,9 @@ class GetTicketDetailsView(APIView, BasicPageination):
         tickets = Ticket.objects.filter(deleted_at__isnull=True)
         totalTicketsCount = tickets.count()
 
-        deletedTicekts = Ticket.objects.filter(deleted_at__isnull=False)
+        deletedTicekts = Ticket.objects.filter(
+            status=TicketStatus.DELETED, deleted_at__isnull=True
+        )
         deletedTicektsCount = deletedTicekts.count()
 
         inProgressTickets = Ticket.objects.filter(
