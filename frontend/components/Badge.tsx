@@ -33,7 +33,7 @@ export default function Badge({ status }: BadgeProps): JSX.Element {
 
   return (
     <div
-      className={`h-8 flex justify-center items-center rounded-xl ${bgColor}`}
+      className={`h-8 px-2 flex justify-center items-center rounded-xl ${bgColor}`}
     >
       <span className={`font-bold capitalize ${textColor}`}>{status}</span>
     </div>

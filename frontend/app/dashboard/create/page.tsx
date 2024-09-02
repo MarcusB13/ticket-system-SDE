@@ -23,7 +23,7 @@ export default async function page() {
       <Form
         item={{
           service_level_agreement:
-            user.company[0].service_level_agreement?.uuid,
+            user.company[0]?.service_level_agreement?.uuid,
         }}
         onSubmit={createTicket}
         redirect="/dashboard/my-tickets"
