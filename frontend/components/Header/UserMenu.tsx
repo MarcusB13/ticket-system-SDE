@@ -42,14 +42,10 @@ export default function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onSelect={() => router.push("/admin/dashboard/setting/settings")}
+          onClick={handleLogout}
+          className="flex justify-between"
         >
-          <CiSettings size={25} className="mr-1" />
-          Indstillinger
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex justify-between">
-          Log ud
+                    Log ud
           <IoPowerOutline size={20} />
         </DropdownMenuItem>
       </DropdownMenuContent>

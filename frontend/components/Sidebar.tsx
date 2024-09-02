@@ -1,8 +1,6 @@
 import React from "react";
-import { Button } from "./ui/button";
 import NavLink from "./NavLink";
 import { FaList, FaUsers } from "react-icons/fa";
-import { FiChevronsLeft } from "react-icons/fi";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { TbBulbFilled } from "react-icons/tb";
 
@@ -102,14 +100,6 @@ export default function Sidebar({ user }: SidebarProps) {
             )}
           </nav>
         </div>
-        <Button
-          size="icon"
-          variant="outline"
-          aria-label="Collapse sidebar"
-          className="absolute -right-5 top-1/2 hidden rounded-full md:inline-flex"
-        >
-          <FiChevronsLeft className={`h-5 w-5`} />
-        </Button>
       </div>
     </aside>
   );
