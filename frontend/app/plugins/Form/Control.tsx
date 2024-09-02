@@ -15,6 +15,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { MultiSelect } from "@/components/MultiSelect";
 import {
   FormItem,
   FormControl,
@@ -172,6 +173,17 @@ export const Control: React.FC<ControlProps> = ({
             {...field}
             selected={field.value}
             onSelect={field.onChange}
+            {...rest}
+          />
+        );
+      case "multi-select":
+        return (
+          <MultiSelect
+            {...field}
+            options={options}
+            value={field.value}
+            onChange={field.onChange}
+            placeholder={placeholder}
             {...rest}
           />
         );
