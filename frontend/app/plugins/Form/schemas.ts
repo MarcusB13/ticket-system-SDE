@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const emailSchema = z.string().email({ message: "Indtast gyldig e-mail" });
+export const emailSchema = z
+  .string()
+  .email({ message: "Indtast gyldig e-mail" });
 
 const passwordSchema = z
   .string()
@@ -33,6 +35,7 @@ export const typeSchemas = {
   number: z.coerce.number(),
   checkbox: z.boolean(),
   select: z.string(),
+  "multi-select": z.array(z.object({ label: z.string(), value: z.string() })),
   radio: z.string(),
   textarea: z.string(),
   date: z.date(),

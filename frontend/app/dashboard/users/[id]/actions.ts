@@ -19,7 +19,7 @@ const updateUserScheme = z.object({
   username: usernameSchema,
   email: emailSchema,
   role: z.string(),
-  company: z.string(),
+  company: z.array(z.object({ label: z.string(), value: z.string() })),
   is_active: z.boolean(),
   isCurrentUser: z.boolean(),
 });
@@ -40,9 +40,11 @@ export async function updateUser(formData: FormData) {
     if (data.isCurrentUser) {
       await axiosInstance.patch("/users/update/", data);
     } else {
+      const company = data.company.map((company) => company.value);
+
       await axiosInstance.patch(`/users/${uuid}/`, {
         ...data,
-        company: [data.company],
+        company,
       });
     }
 

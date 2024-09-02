@@ -46,7 +46,10 @@ export default async function page({ params }: Props) {
       <Form
         item={{
           ...user,
-          company: user.company[0]?.uuid,
+          company: user.company.map((company) => ({
+            label: company.name,
+            value: company.uuid,
+          })),
           isCurrentUser,
         }}
         onSubmit={updateUser}
@@ -99,13 +102,14 @@ export default async function page({ params }: Props) {
             {isAdmin && (
               <>
                 <Control
-                  type="select"
+                  type="multi-select"
                   name="company"
                   label="Company"
                   options={companies.map((company) => ({
                     label: company.name,
                     value: company.uuid,
                   }))}
+                  placeholder="Select company"
                 />
                 <Control type="checkbox" name="is_active" label="Active" />
               </>
