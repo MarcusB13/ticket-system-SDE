@@ -22,12 +22,23 @@ interface UserMenuProps {
 export default function UserMenu({ user }: UserMenuProps) {
   const router = useRouter();
 
+  const handleLogout = async () => {
+    try {
+      document.cookie = "jwt=; expires Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      router.push("/sign-in");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="uppercase">{user.username.slice(0, 1)}</AvatarFallback>
+            <AvatarFallback className="uppercase">
+              {user.username.slice(0, 1)}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -45,7 +56,7 @@ export default function UserMenu({ user }: UserMenuProps) {
           onClick={handleLogout}
           className="flex justify-between"
         >
-                    Log ud
+          Log ud
           <IoPowerOutline size={20} />
         </DropdownMenuItem>
       </DropdownMenuContent>
