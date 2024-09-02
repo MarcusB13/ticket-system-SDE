@@ -82,6 +82,9 @@ class TicketSerializer(serializers.ModelSerializer):
                     "Solution must be at least 20 characters long"
                 )
 
+        if not self.instance:
+            return attrs
+
         note = attrs.get("note")
         level = attrs.get("level")
         uuid = self.instance.uuid
