@@ -1,14 +1,14 @@
 class TicketStatus:
     NEW = "new"
-    IN_PROGRESS = "in_progress"
-    RESOLVED = "resolved"
+    PENDING = "pending"
     CLOSED = "closed"
+    DELETED = "deleted"
 
     CHOICES = (
         (NEW, "New"),
-        (IN_PROGRESS, "In Progress"),
-        (RESOLVED, "Resolved"),
+        (PENDING, "Pending"),
         (CLOSED, "Closed"),
+        (DELETED, "Deleted"),
     )
 
 
