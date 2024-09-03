@@ -49,10 +49,11 @@ export default function Header({ user }: HeaderProps) {
   const handleQueryChange = (query: string) => {
     setQuery(query);
     if (query.length > 2) {
+      setOpen(true);
       getSearchResults(query);
     } else {
-      setSearchResults([]);
       setOpen(false);
+      setSearchResults([]);
     }
   };
 
