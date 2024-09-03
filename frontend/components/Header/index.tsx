@@ -62,19 +62,19 @@ export default function Header({ user }: HeaderProps) {
 
     switch (status) {
       case "new":
-        color = "!bg-green-100";
+        color = "!bg-green-100 hover:!bg-green-200";
         break;
       case "pending":
-        color = "!bg-blue-100";
+        color = "!bg-blue-100 hover:!bg-blue-200";
         break;
       case "closed":
-        color = "!bg-yellow-100";
+        color = "!bg-yellow-100 hover:!bg-yellow-200";
         break;
       case "deleted":
-        color = "!bg-red-100";
+        color = "!bg-red-100 hover:!bg-red-200";
         break;
       default:
-        color = "!bg-gray-100";
+        color = "!bg-gray-100 hover:!bg-gray-200";
         break;
     }
 
