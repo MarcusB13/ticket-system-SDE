@@ -4,15 +4,25 @@ import React, { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import UserMenu from "./UserMenu";
-import { Input } from "../ui/input";
+import {
+  Command,
+  CommandList,
+  CommandItem,
+  CommandGroup,
+} from "@/components/ui/command";
+import { Command as CommandPrimitive } from "cmdk";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   user: User;
 }
 
 export default function Header({ user }: HeaderProps) {
-  const [query, setQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const router = useRouter();
+
+  const [query, setQuery] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<Ticket[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const getSearchResults = async (query: string) => {
     try {
@@ -27,17 +37,16 @@ export default function Header({ user }: HeaderProps) {
           withCredentials: true,
           headers: {
             Authorization: `Token ${jwt}`,
-          }
+          },
         }
       );
-      setSearchResults(data);
+      setSearchResults(data.results);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
+  const handleQueryChange = (query: string) => {
     setQuery(query);
     if (query.length > 2) {
       getSearchResults(query);
@@ -45,6 +54,30 @@ export default function Header({ user }: HeaderProps) {
       setSearchResults([]);
       setOpen(false);
     }
+  };
+
+  const getStatusColor = (status: string): string => {
+    let color = "";
+
+    switch (status) {
+      case "new":
+        color = "!bg-green-100";
+        break;
+      case "pending":
+        color = "!bg-blue-100";
+        break;
+      case "closed":
+        color = "!bg-yellow-100";
+        break;
+      case "deleted":
+        color = "!bg-red-100";
+        break;
+      default:
+        color = "!bg-gray-100";
+        break;
+    }
+
+    return color;
   };
 
   return (
@@ -58,15 +91,45 @@ export default function Header({ user }: HeaderProps) {
         </Link>
       </nav>
       <div className="ml-auto flex items-center space-x-4">
-        <div>
-          <Input
-            type="search"
-            placeholder="Søg..."
+        <Command className="overflow-visible bg-transparent">
+          <CommandPrimitive.Input
+            placeholder="Search..."
             value={query}
-            onChange={handleQueryChange}
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:w-[100px] lg:w-[300px]"
+            onBlur={() => setOpen(false)}
+            onFocus={() => setOpen(true)}
+            onValueChange={handleQueryChange}
+            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:w-[100px] lg:w-[300px]"
           />
-        </div>
+          <div className="relative">
+            <CommandList>
+              {open && searchResults.length > 0 ? (
+                <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                  <CommandGroup className="h-full overflow-auto">
+                    {searchResults.map((result, index) => (
+                      <CommandItem
+                        key={result.uuid}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onSelect={() => {
+                          setQuery("");
+                          setOpen(false);
+                          router.push(`/dashboard/tickets/${result.uuid}`);
+                        }}
+                        className={
+                          "curser-pointer " + getStatusColor(result.status)
+                        }
+                      >
+                        {result.subject}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </div>
+              ) : null}
+            </CommandList>
+          </div>
+        </Command>
         <UserMenu user={user} />
       </div>
     </div>
