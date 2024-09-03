@@ -41,6 +41,9 @@ export default function Header({ user }: HeaderProps) {
     setQuery(query);
     if (query.length > 2) {
       getSearchResults(query);
+    } else {
+      setSearchResults([]);
+      setOpen(false);
     }
   };
 
